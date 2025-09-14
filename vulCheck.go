@@ -4,21 +4,22 @@ import (
 	"fmt"
 	"os"
 	fileOps "win-rce-checker/pkg/file-ops"
+	platform "win-rce-checker/pkg/platform"
 	procOps "win-rce-checker/pkg/proc-ops"
-)
-
-var (
-	path    string = "C:\\Users\\Public\\exploit_success.txt"
-	content string = "Exploited"
-	cmd     string = "calc.exe"
 )
 
 func main() {
 	// Ignore any commandline arguments
 	_ = os.Args
 
+	platformConfig, err := platform.GetPlatformConfig()
+	if err != nil {
+		fmt.Println("Error:", err)
+		return
+	}
+
 	// Evidence file
-	file, err := fileOps.WriteIndicatorFile(path, content)
+	file, err := fileOps.WriteIndicatorFile(platformConfig.FilePath, platformConfig.Content)
 	if err != nil {
 		fmt.Println("Error:", err)
 		return
@@ -28,10 +29,10 @@ func main() {
 	fmt.Println("Evidence file written.")
 
 	// Evidence command execution
-	err = procOps.ExecuteIndicatorCmd(cmd)
+	err = procOps.ExecuteIndicatorCmd(platformConfig.Cmd)
 	if err != nil {
-		fmt.Println(fmt.Sprintf("Command execution for \"%s\" failed:", cmd), err)
+		fmt.Println(fmt.Sprintf("Command execution for \"%s\" failed:", platformConfig.Cmd), err)
 	} else {
-		fmt.Printf("Command \"%s\" executed.", cmd)
+		fmt.Printf("Command \"%s\" executed.", platformConfig.Cmd)
 	}
 }
