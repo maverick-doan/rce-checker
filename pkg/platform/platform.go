@@ -46,7 +46,7 @@ func GetPlatformConfig() (PlatformConfig, error) {
 			OS:       Linux,
 			FilePath: "/tmp/exploit_success.txt",
 			Content:  "Exploited",
-			Cmd:      "echo \"Exploited\" > /tmp/exploit_success.txt",
+			Cmd:      "sh -c 'printf \"ExploitProof:%s\n\" \"$(date +%s)\" > /tmp/exploit_success.txt'",
 		}, nil
 	default:
 		return PlatformConfig{},
