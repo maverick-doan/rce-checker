@@ -23,7 +23,7 @@ jobs:
                 go version
                 mkdir -p bin
                 GOOS=windows GOARCH=amd64 go build -trimpath -ldflags "-s -w" -o bin/win-rce-checker.exe .
-                GOOS=linux   GOARCH=amd64 go build -trimpath -ldflags "-s -w" -o bin/win-rce-checker .
+                GOOS=linux   GOARCH=amd64 go build -trimpath -ldflags "-s -w" -o bin/linux-rce-checker .
             - name: Commit and push binaries
               run: |
                 git config --global user.name 'GitHub Actions'
